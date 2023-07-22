@@ -40,8 +40,6 @@ jobs:
           TAGS=()
           TAGS=("${{ secrets.DOCKERHUB_REPO }}:latest")
           TAGS+=("${{ secrets.DOCKERHUB_REPO }}:${VERSION}")
-          TAGS+=("ghcr.io/${{ github.repository }}:latest")
-          TAGS+=("ghcr.io/${{ github.repository }}:${VERSION}")
           
           echo "tags=${TAGS[@]}" >> $GITHUB_OUTPUT
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
