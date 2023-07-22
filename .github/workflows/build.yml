@@ -38,8 +38,8 @@ jobs:
           VERSION="${{ vars.MAJOR }}.${{ vars.MINOR }}"
           
           TAGS=()
-          TAGS=("dockurr/strfry:latest")
-          #TAGS+=("${{ secrets.DOCKERHUB_REPO }}:${VERSION}")
+          TAGS=("${{ secrets.DOCKERHUB_REPO }}:latest")
+          TAGS+=("${{ secrets.DOCKERHUB_REPO }}:${VERSION}")
           
           echo "tags=${TAGS[@]}" >> $GITHUB_OUTPUT
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
