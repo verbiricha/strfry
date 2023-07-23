@@ -37,6 +37,7 @@ jobs:
         
           PLATFORMS="linux/amd64,linux/arm64"
           VERSION=$(grep --only-matching --perl-regex "(?<=VERSION_ARG\=).*" ./Dockerfile)
+          VERSION=$(echo "${VERSION}" | xargs)
           
           TAGS=()
           TAGS=("${{ secrets.DOCKERHUB_REPO }}:latest")
