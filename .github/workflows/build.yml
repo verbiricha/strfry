@@ -35,7 +35,7 @@ jobs:
         run: |
         
           PLATFORMS="linux/amd64,linux/arm64"
-          VERSION="${{ vars.MAJOR }}.${{ vars.MINOR }}"
+          VERSION=$(grep --only-matching --perl-regex "(?<=VERSION\=).*" ./Dockerfile)
           
           TAGS=()
           TAGS=("${{ secrets.DOCKERHUB_REPO }}:latest")
@@ -105,9 +105,4 @@ jobs:
             ${{ steps.changelog.outputs.changes }}
 
             **Full Changelog**: https://github.com/${{ github.repository }}/compare//${{ env.previousTag }}...v${{ steps.prepare.outputs.version }}
-      -
-        name: Increment version variable
-        uses: action-pack/bump@v2
-        with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-     
+      
