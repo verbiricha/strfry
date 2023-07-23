@@ -1,6 +1,6 @@
 services:
   strfry-nostr-relay:
-    build: .
+    image: "dockurr/strfry:latest"
     volumes:
       - /path/to/strfry.conf:/etc/strfry.conf
       - /path/to/strfry-db:/app/strfry-db
