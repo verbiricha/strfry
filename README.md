@@ -17,6 +17,7 @@ Via `docker-compose`
 version: "3"
 services:
   strfry:
+    container_name: strfry
     image: "dockurr/strfry:latest"
     volumes:
         - /path/to/strfry.conf:/etc/strfry.conf
