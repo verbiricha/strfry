@@ -1,4 +1,4 @@
-FROM debian:buster-slim as build
+FROM ubuntu:jammy as build
 ENV TZ=Europe/Amsterdam
 WORKDIR /build
 
@@ -17,7 +17,7 @@ RUN git submodule update --init
 RUN make setup-golpe
 RUN make -j4
 
-FROM debian:buster-slim as runner
+FROM ubuntu:jammy as runner
 WORKDIR /app
 
 RUN apt-get update && apt-get -y upgrade && \
