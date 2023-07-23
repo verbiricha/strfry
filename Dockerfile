@@ -1,7 +1,12 @@
-FROM ubuntu:jammy as build
+FROM debian:bookworm-slim as build
 ENV TZ=Europe/Amsterdam
 WORKDIR /build
-RUN apt update && apt install -y --no-install-recommends \
+
+ARG DEBCONF_NOWARNINGS="yes"
+ARG DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && apt-get -y upgrade && \
+    apt-get --no-install-recommends -y install \
     git g++ make pkg-config libtool ca-certificates \
     libyaml-perl libtemplate-perl libregexp-grammars-perl libssl-dev zlib1g-dev \
     liblmdb-dev libflatbuffers-dev libsecp256k1-dev \
@@ -12,10 +17,11 @@ RUN git submodule update --init
 RUN make setup-golpe
 RUN make -j4
 
-FROM ubuntu:jammy as runner
+FROM debian:bookworm-slim as runner
 WORKDIR /app
 
-RUN apt update && apt install -y --no-install-recommends \
+RUN apt-get update && apt-get -y upgrade && \
+    apt-get --no-install-recommends -y install \
     liblmdb0 libflatbuffers1 libsecp256k1-0 libb2-1 libzstd1 python3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
