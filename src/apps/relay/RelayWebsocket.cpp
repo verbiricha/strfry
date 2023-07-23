@@ -51,11 +51,15 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr) {
     tao::json::value supportedNips = tao::json::value::array({ 1, 2, 4, 9, 11, 12, 16, 20, 22, 28, 33, 40 });
 
     auto getServerInfoHttpResponse = [&supportedNips, ver = uint64_t(0), rendered = std::string("")]() mutable {
+        
+        char* cVersion = getenv("VERSION");
+        std::string sVersion( cVersion );
+        
         if (ver != cfg().version()) {
             tao::json::value nip11 = tao::json::value({
                 { "supported_nips", supportedNips },
                 { "software", "git+https://github.com/hoytech/strfry.git" },
-                { "version", getenv("VERSION") },
+                { "version", sVersion },
             });
 
             if (cfg().relay__info__name.size()) nip11["name"] = cfg().relay__info__name;
@@ -71,11 +75,15 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr) {
     };
 
     auto getLandingPageHttpResponse = [&supportedNips, ver = uint64_t(0), rendered = std::string("")]() mutable {
+
+        char* cVersion = getenv("VERSION");
+        std::string sVersion( cVersion );
+        
         if (ver != cfg().version()) {
             struct {
                 std::string supportedNips;
                 std::string version;
-            } ctx = { tao::json::to_string(supportedNips), getenv("VERSION") };
+            } ctx = { tao::json::to_string(supportedNips), sVersion };
 
             rendered = preGenerateHttpResponse("text/html", ::strfrytmpl::landing(ctx).str);
             ver = cfg().version();
