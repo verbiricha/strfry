@@ -1,13 +1,17 @@
-# strfry-docker
-
-![strfry logo](docs/strfry.svg)
-
-Docker image of [strfry](https://github.com/hoytech/strfry), a relay for the [nostr](https://github.com/nostr-protocol/nostr) protocol.
-
+<h1 align="center">strfry-docker<br />
+<div align="center">
+<img src="https://raw.githubusercontent.com/dockur/strfry/master/docs/strfry.svg" title="Logo" style="max-width:100%;" width="256" />
+</div>
+<div align="center">
+  
 [![Build]][build_url]
 [![Version]][tag_url]
 [![Size]][tag_url]
 [![Pulls]][hub_url]
+
+</div></h1>
+
+Docker image of [strfry](https://github.com/hoytech/strfry), a relay for the [nostr](https://github.com/nostr-protocol/nostr) protocol.
 
 ## How to use
 
