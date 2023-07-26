@@ -52,14 +52,11 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr) {
 
     auto getServerInfoHttpResponse = [&supportedNips, ver = uint64_t(0), rendered = std::string("")]() mutable {
         
-        char* cVersion = getenv("VERSION");
-        std::string sVersion( cVersion );
-        
         if (ver != cfg().version()) {
             tao::json::value nip11 = tao::json::value({
                 { "supported_nips", supportedNips },
                 { "software", "git+https://github.com/hoytech/strfry.git" },
-                { "version", sVersion },
+                { "version", APP_GIT_VERSION },
             });
 
             if (cfg().relay__info__name.size()) nip11["name"] = cfg().relay__info__name;
@@ -76,14 +73,11 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr) {
 
     auto getLandingPageHttpResponse = [&supportedNips, ver = uint64_t(0), rendered = std::string("")]() mutable {
 
-        char* cVersion = getenv("VERSION");
-        std::string sVersion( cVersion );
-        
         if (ver != cfg().version()) {
             struct {
                 std::string supportedNips;
                 std::string version;
-            } ctx = { tao::json::to_string(supportedNips), sVersion };
+            } ctx = { tao::json::to_string(supportedNips), APP_GIT_VERSION };
 
             rendered = preGenerateHttpResponse("text/html", ::strfrytmpl::landing(ctx).str);
             ver = cfg().version();
