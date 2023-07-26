@@ -51,7 +51,6 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr) {
     tao::json::value supportedNips = tao::json::value::array({ 1, 2, 4, 9, 11, 12, 16, 20, 22, 28, 33, 40 });
 
     auto getServerInfoHttpResponse = [&supportedNips, ver = uint64_t(0), rendered = std::string("")]() mutable {
-        
         if (ver != cfg().version()) {
             tao::json::value nip11 = tao::json::value({
                 { "supported_nips", supportedNips },
@@ -72,7 +71,6 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr) {
     };
 
     auto getLandingPageHttpResponse = [&supportedNips, ver = uint64_t(0), rendered = std::string("")]() mutable {
-
         if (ver != cfg().version()) {
             struct {
                 std::string supportedNips;
