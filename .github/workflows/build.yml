@@ -54,7 +54,7 @@ jobs:
         name: Clone branch
         run: |
           git config --global url.https://github.com/.insteadOf git://github.com/
-          git clone --single-branch --branch ${VERSION} https://github.com/hoytech/strfry.git
+          git clone https://github.com/hoytech/strfry.git --single-branch --branch ${VERSION}
       -
         name: Login into Docker Hub
         uses: docker/login-action@v2
