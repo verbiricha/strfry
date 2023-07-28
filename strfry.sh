@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-./strfry stream &
+if [ ! -f "/etc/strfry.conf" ]; then
+  cp /app/strfry.conf.default /etc/strfry.conf
+fi
+
+cd /app
+./strfry relay &
 
 : ${STREAMS:=''}
 [[ -z "$STREAMS" ]] && exit
