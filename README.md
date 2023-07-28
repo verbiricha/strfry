@@ -22,7 +22,7 @@ version: "3"
 services:
   strfry:
     container_name: strfry
-    image: "dockurr/strfry:latest"
+    image: dockurr/strfry:latest
     environment:
             STREAMS: "relayable.org,relay.damus.io"
     ports:
