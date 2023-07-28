@@ -41,11 +41,12 @@ HEALTHCHECK --interval=60s --retries=2 --timeout=10s CMD wget -nv -t1 --spider '
 
 ENV STREAMS ""
 
+COPY strfry.sh /app/strfry.sh
 COPY strfry.conf /etc/strfry.conf.default
 COPY write-policy.py /app/write-policy.py
 
-COPY strfry.sh /app/strfry.sh
 RUN chmod +x /app/strfry.sh
+RUN chmod +x /app/write-policy.py
 
 COPY --from=build /build/strfry strfry
 CMD /bin/bash /app/strfry.sh
