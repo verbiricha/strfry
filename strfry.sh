@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
 if [ ! -f "/etc/strfry.conf" ]; then
   cp /etc/strfry.conf.default /etc/strfry.conf
 fi
