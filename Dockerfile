@@ -22,7 +22,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get -y upgrade && \
     apt-get --no-install-recommends -y install \
-    liblmdb0 libflatbuffers1 libsecp256k1-0 libb2-1 libzstd1 python3 \
+    liblmdb0 libflatbuffers1 libsecp256k1-0 libb2-1 libzstd1 wget python3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
     
@@ -37,6 +37,13 @@ LABEL org.opencontainers.image.version=${VERSION_ARG}
 LABEL org.opencontainers.image.source=https://github.com/dockur/strfry/
 LABEL org.opencontainers.image.url=https://hub.docker.com/r/dockurr/strfry/
 
+HEALTHCHECK --interval=60s --retries=2 --timeout=10s CMD wget -nv -t1 --spider 'http://localhost:7777/' || exit 1
+
+ENV STREAMS ""
+
+COPY strfry.sh strfry.sh
+COPY strfry.conf strfry.conf.default
+RUN chmod +x strfry.sh
+
 COPY --from=build /build/strfry strfry
-ENTRYPOINT ["/app/strfry"]
-CMD ["relay"]
+CMD /bin/bash /app/strfry.sh
