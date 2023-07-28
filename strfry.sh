@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 if [ ! -f "/etc/strfry.conf" ]; then
-  cp /app/strfry.conf.default /etc/strfry.conf
+  cp /etc/strfry.conf.default /etc/strfry.conf
 fi
 
 cd /app
