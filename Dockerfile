@@ -49,4 +49,4 @@ RUN chmod +x /app/strfry.sh
 RUN chmod +x /app/write-policy.py
 
 COPY --from=build /build/strfry strfry
-CMD /bin/bash /app/strfry.sh
+CMD ["/app/strfry.sh"]
