@@ -55,8 +55,11 @@ jobs:
         run: |
           git config --global url.https://github.com/.insteadOf git://github.com/
           git clone https://github.com/hoytech/strfry.git --single-branch --branch ${{ steps.prepare.outputs.version }}
-          cp Dockerfile strfry/Dockerfile
-          cp .dockerignore strfry/.dockerignore
+          cp Dockerfile strfry/
+          cp .dockerignore strfry/
+          cp strfry.sh strfry/
+          cp strfry.conf strfry/
+          cp write-policy.py strfry/
       -
         name: Login into Docker Hub
         uses: docker/login-action@v2
