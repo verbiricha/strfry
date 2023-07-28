@@ -12,14 +12,13 @@ cd /app
 PID=$!
 
 : ${STREAMS:=''}
-if [[ ! -z "$STREAMS" ]]; then
 
-  for i in $(echo $STREAMS | sed "s/,/ /g")
-  do
-    ./strfry stream wss://${i} --dir down 2> /dev/null &
-    sleep 2
-  done
-  
-fi
+for i in $(echo $STREAMS | sed "s/,/ /g")
+do
+    if [[ -n "$i" ]]; then
+        sleep 2
+        ./strfry stream wss://$i --dir down 2> /dev/null &
+    fi
+done
 
 wait $PID
