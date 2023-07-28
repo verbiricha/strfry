@@ -23,11 +23,13 @@ services:
   strfry:
     container_name: strfry
     image: "dockurr/strfry:latest"
-    volumes:
-        - /path/to/strfry.conf:/etc/strfry.conf
-        - /path/to/strfry-db:/app/strfry-db
+    environment:
+            STREAMS: "relayable.org,relay.damus.io"
     ports:
-        - "7777:7777"
+        - 7777:7777
+    volumes:
+        - /path/to/strfry-db:/app/strfry-db
+        - /path/to/strfry.conf:/etc/strfry.conf
 ```
 
 [build_url]: https://github.com/dockur/strfry/
