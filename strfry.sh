@@ -16,7 +16,7 @@ if [[ ! -z "$STREAMS" ]]; then
 
   for i in $(echo $STREAMS | sed "s/,/ /g")
   do
-    ./strfry stream wss://${i} --dir down &
+    ./strfry stream wss://${i} --dir down 2> null &
     sleep 2
   done
   
