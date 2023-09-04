@@ -45,6 +45,7 @@ RUN \
     libb2 \
     zstd \
     libressl \
+    bash \
     wget \
     python3 \
   && rm -rf /var/cache/apk/*
