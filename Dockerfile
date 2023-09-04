@@ -46,7 +46,7 @@ RUN \
     zstd \
     libressl \
     wget \
-    python3
+    python3 \
   && rm -rf /var/cache/apk/*
 
 ARG DATE_ARG=""
