@@ -36,7 +36,7 @@ jobs:
         run: |
         
           PLATFORMS="linux/amd64,linux/arm64"
-          VERSION=$(grep --only-matching --perl-regex "(?<=VERSION_ARG\=).*" ./Dockerfile)
+          VERSION=$(grep --only-matching --perl-regex "(?<=VERSION_ARG\=).*" ./ubuntu.Dockerfile)
           VERSION=$(echo "${VERSION}" | xargs)
           
           TAGS=()
@@ -56,6 +56,7 @@ jobs:
           git config --global url.https://github.com/.insteadOf git://github.com/
           git clone https://github.com/hoytech/strfry.git --single-branch --branch ${{ steps.prepare.outputs.version }}
           cp Dockerfile strfry/
+          cp ubuntu.Dockerfile strfry/
           cp .dockerignore strfry/
           cp strfry.sh strfry/
           cp strfry.conf strfry/
@@ -90,9 +91,8 @@ jobs:
             --build-arg "VERSION_ARG=${{ steps.prepare.outputs.version }}" \
             --build-arg "DATE_ARG=${{ steps.prepare.outputs.build_date }}" \
             --build-arg "VCS_REF=${GITHUB_SHA::8}" \
-            $(printf "%s" "${TAGS[@]/#/ --tag }" ) strfry/.
+            $(printf "%s" "${TAGS[@]/#/ --tag }" ) strfry/ubuntu.Dockerfile
       -
         name: Clear Docker credentials
         run: |
           rm -f ${HOME}/.docker/config.json
-      
