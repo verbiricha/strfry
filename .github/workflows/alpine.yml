@@ -1,4 +1,4 @@
-name: Build
+name: Alpine
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build Alpine
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -80,7 +80,7 @@ jobs:
           echo "Build date: ${{ steps.prepare.outputs.build_date }}"
           echo "Docker platform: ${{ steps.prepare.outputs.docker_platforms }}"
           echo "Tags: ${{ steps.prepare.outputs.tags }}"
-          ls strfry/*
+          
           docker buildx build --platform ${{ steps.prepare.outputs.docker_platforms }} \
             --output "type=image,push=true" \
             --progress=plain \
