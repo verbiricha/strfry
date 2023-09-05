@@ -39,4 +39,4 @@ services:
 [Build]: https://github.com/dockur/strfry/actions/workflows/build.yml/badge.svg
 [Size]: https://img.shields.io/docker/image-size/dockurr/strfry/latest?color=066da5&label=size
 [Pulls]: https://img.shields.io/docker/pulls/dockurr/strfry.svg?style=flat&label=pulls&logo=docker
-[Version]: https://img.shields.io/docker/v/dockurr/strfry?arch=amd64&sort=date&color=066da5
+[Version]: https://img.shields.io/docker/v/dockurr/strfry/latest?arch=amd64&sort=semver&color=066da5
