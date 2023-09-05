@@ -36,7 +36,7 @@ jobs:
         run: |
         
           PLATFORMS="linux/amd64,linux/arm64"
-          VERSION=$(grep --only-matching --perl-regex "(?<=VERSION_ARG\=).*" ./Dockerfile)
+          VERSION=$(grep --only-matching --perl-regex "(?<=VERSION_ARG\=).*" ./ubuntu.Dockerfile)
           VERSION=$(echo "${VERSION}" | xargs)
           
           TAGS=()
@@ -55,7 +55,7 @@ jobs:
         run: |
           git config --global url.https://github.com/.insteadOf git://github.com/
           git clone https://github.com/hoytech/strfry.git --single-branch --branch ${{ steps.prepare.outputs.version }}
-          cp Dockerfile strfry/
+          cp ubuntu.Dockerfile strfry/Dockerfile
           cp .dockerignore strfry/
           cp strfry.sh strfry/
           cp strfry.conf strfry/
