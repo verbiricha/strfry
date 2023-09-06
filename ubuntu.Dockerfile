@@ -44,6 +44,7 @@ ENV STREAMS ""
 COPY strfry.sh /app/strfry.sh
 COPY strfry.conf /etc/strfry.conf.default
 COPY write-policy.py /app/write-policy.py
+COPY strfry-router.conf /etc/strfry-router.conf
 
 RUN chmod +x /app/strfry.sh
 RUN chmod +x /app/write-policy.py
