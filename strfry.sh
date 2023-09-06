@@ -11,6 +11,7 @@ cd /app
 ./strfry relay &
 PID=$!
 
+: ${ROUTER:=''}
 : ${STREAMS:=''}
 
 for i in $(echo $STREAMS | sed "s/,/ /g")
@@ -20,5 +21,10 @@ do
         ./strfry stream wss://$i --dir down 2> /dev/null &
     fi
 done
+
+if [[ "${ROUTER}" == [Yy1]* ]]; then
+    sleep 2
+    ./strfry router /etc/strfry-router.conf &
+fi
 
 wait $PID
