@@ -5,7 +5,7 @@ services:
     image: dockurr/strfry:latest
     environment:
             ROUTER: "N"    
-            STREAMS: "relayable.org,relay.damus.io"
+            STREAMS: "relayable.org,soloco.nl"
     ports:
         - 7777:7777
     volumes:
