@@ -24,6 +24,7 @@ services:
     container_name: strfry
     image: dockurr/strfry:latest
     environment:
+            ROUTER: "N"
             STREAMS: "relayable.org,relay.damus.io"
     ports:
         - 7777:7777
