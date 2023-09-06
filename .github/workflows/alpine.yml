@@ -58,6 +58,7 @@ jobs:
           cp strfry.sh strfry/
           cp strfry.conf strfry/
           cp write-policy.py strfry/
+          cp strfry-router.conf strfry/
       -
         name: Login into Docker Hub
         uses: docker/login-action@v2
