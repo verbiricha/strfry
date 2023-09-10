@@ -160,11 +160,11 @@ void cmd_sync(const std::vector<std::string> &subArgs) {
                 auto &evJson = msg.at(2);
 
                 std::string okMsg;
-                auto res = writePolicyPlugin.acceptEvent(cfg().relay__writePolicy__plugin, evJson, hoytech::curr_time_s(), EventSourceType::Sync, ws.remoteAddr, okMsg);
+                auto res = writePolicyPlugin.acceptEvent(cfg().relay__writePolicy__plugin, evJson, hoytech::curr_time_us(), EventSourceType::Sync, ws.remoteAddr, okMsg);
                 if (res == PluginEventSifterResult::Accept) {
                     writer.write({ std::move(evJson), EventSourceType::Sync, url });
                 } else {
-                    LI << "[" << ws.remoteAddr << "] write policy blocked event " << evJson.at("id").get_string() << ": " << okMsg;
+                    if (okMsg.size()) LI << "[" << ws.remoteAddr << "] write policy blocked event " << evJson.at("id").get_string() << ": " << okMsg;
                 }
             } else if (msg.at(0) == "EOSE") {
                 inFlightDown = false;
