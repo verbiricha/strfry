@@ -52,7 +52,7 @@ RUN \
 
 ARG DATE_ARG=""
 ARG BUILD_ARG=0
-ARG VERSION_ARG="0.9.4"
+ARG VERSION_ARG="0.9.5"
 ENV VERSION=$VERSION_ARG
 
 LABEL org.opencontainers.image.created=${DATE_ARG}
