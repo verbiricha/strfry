@@ -36,7 +36,7 @@ jobs:
         run: |
         
           PLATFORMS="linux/amd64,linux/arm64"
-          VERSION=$(grep --only-matching --perl-regex "(?<=VERSION_ARG\=).*" ./ubuntu.Dockerfile)
+          VERSION=$(grep --only-matching --perl-regex "(?<=VERSION_ARG\=).*" ./Dockerfile)
           VERSION=$(echo "${VERSION}" | xargs)
           
           TAGS=()
@@ -48,14 +48,13 @@ jobs:
           echo "tags=${TAGS[@]}" >> $GITHUB_OUTPUT
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "docker_platforms=${PLATFORMS}" >> $GITHUB_OUTPUT
-          echo "build_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
-      
+          echo "build_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT      
       - 
         name: Clone branch
         run: |
           git config --global url.https://github.com/.insteadOf git://github.com/
           git clone https://github.com/hoytech/strfry.git --single-branch --branch ${{ steps.prepare.outputs.version }}
-          cp ubuntu.Dockerfile strfry/Dockerfile
+          cp Dockerfile strfry/
           cp .dockerignore strfry/
           cp strfry.sh strfry/
           cp strfry.conf strfry/
