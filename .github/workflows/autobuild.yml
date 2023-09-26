@@ -5,20 +5,25 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  check-and-build:
+  build:
     runs-on: ubuntu-latest
-
+    permissions:
+      packages: write
+      contents: read
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      
-      - name: Check for new tags in hoytech/strfry
+      - 
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          
+      - 
+        name: Check for new tags in hoytech/strfry
         run: |
           #!/bin/bash
           latest_tag=$(curl -s https://api.github.com/repos/hoytech/strfry/tags | jq -r '.[0].name')
           echo "latest_tag=$latest_tag" >> $GITHUB_ENV
-
-      - name: Check if the new tag exists in DockerHub
+      - 
+        name: Check if the new tag exists in DockerHub
         id: check-tag
         run: |
           #!/bin/bash
@@ -28,34 +33,76 @@ jobs:
           else
             echo "exists=false" >> $GITHUB_ENV
           fi
-
-      - name: Set up QEMU
+      - 
+        name: Set up Docker Buildx
         if: env.exists == 'false'
-        uses: docker/setup-qemu-action@v2
-
-      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Prepare Docker build
         if: env.exists == 'false'
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to DockerHub
+        id: prepare
+        run: |
+        
+          PLATFORMS="linux/amd64,linux/arm64"
+          
+          TAGS=()
+          TAGS=("${{ secrets.DOCKERHUB_REPO }}:latest")
+          TAGS+=("${{ secrets.DOCKERHUB_REPO }}:${{ env.latest_tag }}")
+          TAGS+=("ghcr.io/${{ github.repository }}:latest")
+          TAGS+=("ghcr.io/${{ github.repository }}:${{ env.latest_tag }}")
+          
+          echo "tags=${TAGS[@]}" >> $GITHUB_OUTPUT
+          echo "version=${{ env.latest_tag }}" >> $GITHUB_OUTPUT
+          echo "docker_platforms=${PLATFORMS}" >> $GITHUB_OUTPUT
+          echo "build_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT      
+      - 
+        name: Clone branch
         if: env.exists == 'false'
-        uses: docker/login-action@v2
+        run: |
+          git config --global url.https://github.com/.insteadOf git://github.com/
+          git clone https://github.com/hoytech/strfry.git --single-branch --branch ${{ steps.prepare.outputs.version }}
+          cp Dockerfile strfry/
+          cp .dockerignore strfry/
+          cp strfry.sh strfry/
+          cp strfry.conf strfry/
+          cp write-policy.py strfry/
+          cp strfry-router.conf strfry/
+      -
+        name: Login into Docker Hub
+        if: env.exists == 'false'
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Clone hoytech/strfry
+      -
+        name: Login to GitHub Container Registry
         if: env.exists == 'false'
-        run: git clone https://github.com/hoytech/strfry strfry-hoytech
-
-      - name: Build and push pluja/strfry
-        if: env.exists == 'false'
-        uses: docker/build-push-action@v4
+        uses: docker/login-action@v3
         with:
-          context: ./strfry-hoytech
-          file: ./strfry-hoytech/Dockerfile  # updated path
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            ${{ format('{0}/strfry:{1}', secrets.DOCKERHUB_USERNAME, env.latest_tag) }}
-            ${{ format('{0}/strfry:latest', secrets.DOCKERHUB_USERNAME) }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - 
+        name: Build Docker image
+        if: env.exists == 'false'
+        run: |
+        
+          TAGS=(${{ steps.prepare.outputs.tags }})
+
+          echo "Build date: ${{ steps.prepare.outputs.build_date }}"
+          echo "Docker platform: ${{ steps.prepare.outputs.docker_platforms }}"
+          echo "Tags: ${{ steps.prepare.outputs.tags }}"
+          
+          docker buildx build --platform ${{ steps.prepare.outputs.docker_platforms }} \
+            --output "type=image,push=true" \
+            --progress=plain \
+            --build-arg "BUILD_ARG=${GITHUB_RUN_ID}" \
+            --build-arg "VERSION_ARG=${{ steps.prepare.outputs.version }}" \
+            --build-arg "DATE_ARG=${{ steps.prepare.outputs.build_date }}" \
+            --build-arg "VCS_REF=${GITHUB_SHA::8}" \
+            $(printf "%s" "${TAGS[@]/#/ --tag }" ) strfry/.
+      -
+        name: Clear Docker credentials
+        if: env.exists == 'false'
+        run: |
+          rm -f ${HOME}/.docker/config.json
