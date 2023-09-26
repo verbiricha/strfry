@@ -28,7 +28,7 @@ RUN apt-get update && apt-get -y upgrade && \
     
 ARG DATE_ARG=""
 ARG BUILD_ARG=0
-ARG VERSION_ARG="0.9.6"
+ARG VERSION_ARG=0
 ENV VERSION=$VERSION_ARG
 
 LABEL org.opencontainers.image.created=${DATE_ARG}
