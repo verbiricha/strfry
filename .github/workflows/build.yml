@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       -
         name: Sync fork
-        uses: imba-tjd/rebase-upstream-action@v0.5
+        uses: imba-tjd/rebase-upstream-action@0.5
       - 
         name: Check for new tags in hoytech/strfry
         run: |
