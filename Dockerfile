@@ -48,7 +48,13 @@ RUN \
     bash \
     wget \
     python3 \
+    python3-dev \
+    py3-pip \
+  && apk add --no-cache postgresql-libs \
+  && apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev \
+  && pip install psycopg2 \
   && rm -rf /var/cache/apk/*
+
 
 ARG DATE_ARG=""
 ARG BUILD_ARG=0
