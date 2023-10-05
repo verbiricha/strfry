@@ -47,12 +47,9 @@ RUN \
     libressl \
     bash \
     wget \
-    python3 \
-    python3-dev \
-    py3-pip \
-  && apk add --no-cache postgresql-libs \
-  && apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev \
-  && pip install psycopg2 \
+    nodejs \
+  && apk add --no-cache npm \
+  && npm install postgres \
   && rm -rf /var/cache/apk/*
 
 
