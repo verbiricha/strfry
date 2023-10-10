@@ -22,7 +22,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get -y upgrade && \
     apt-get --no-install-recommends -y install \
-    liblmdb0 libflatbuffers1 libsecp256k1-0 libb2-1 libzstd1 wget python3 \
+    liblmdb0 libflatbuffers1 libsecp256k1-0 libb2-1 libzstd1 wget python3 npm \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
     
@@ -48,6 +48,7 @@ COPY strfry-router.conf /etc/strfry-router.conf
 
 RUN chmod +x /app/strfry.sh
 RUN chmod +x /app/write-policy.py
+RUN npm install postgres
 
 COPY --from=build /build/strfry strfry
 CMD ["/app/strfry.sh"]

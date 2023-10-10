@@ -27,6 +27,8 @@ RUN \
     flatbuffers-dev \
     libsecp256k1-dev \
     zstd-dev \
+  && apk add --no-cache nodejs npm \
+  && npm install postgres \
   && rm -rf /var/cache/apk/* \
   && cpanm Regexp::Grammars \
   && git submodule update --init \
@@ -47,9 +49,6 @@ RUN \
     libressl \
     bash \
     wget \
-    nodejs \
-  && apk add --no-cache npm \
-  && npm install postgres \
   && rm -rf /var/cache/apk/*
 
 
